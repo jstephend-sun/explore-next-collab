@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+
+import { compose, getUsersProps } from 'lib/props';
+import { fetchAllUsers } from 'lib/apiCalls';
+import { User } from 'lib/types';
 
 type Props = {
   users: User[];
 };
 
-export type User = {
-  id: number | string;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-};
-
 const UsersPage = (props: Props) => {
-  const [users, setUsers] = useState<User[] | null>(props.users);
+  // const [users, setUsers] = useState<User[] | null>(props.users.splice(0, 5)); before
+  const [users, setUsers] = useState<User[] | null>(null); // this line
   const router = useRouter();
 
+  useEffect(() => {
+    setUsers(props.users.splice(0, 5));
+  }, [props.users]);
+
   const handleReloadUsers = async (ev: any) => {
-    setUsers(await fetchUsers());
+    setUsers(await fetchAllUsers());
   };
 
-  const handleUserClick = (ev: any, id: number | string) => {
-    router.push(`/users/${id}`);
+  const handleUserClick = (ev: any, id: number) => {
+    router.push(`/users/${id}/posts`);
   };
 
   return (
@@ -41,29 +42,13 @@ const UsersPage = (props: Props) => {
         })}
       </div>
 
-      <button
-        className="mt-4 bg-green-400"
-        onClick={(ev) => handleReloadUsers(ev)}
-      >
+      <button className="btn btn-success mt-4" onClick={handleReloadUsers}>
         Reload users list
       </button>
     </div>
   );
 };
 
-export const fetchUsers = async () => {
-  let result = await fetch('https://jsonplaceholder.typicode.com/users');
-  return await result.json();
-};
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  let users: User[] = await fetchUsers();
-
-  return {
-    props: {
-      users: users.splice(0, 5),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = compose(getUsersProps);
 
 export default UsersPage;

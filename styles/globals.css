@@ -2,16 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .card {
-    @apply bg-gray-900 rounded text-white p-4 shadow-lg;
-  }
-  
-  .btn {
-    @apply rounded p-2
-  }
-}
-
 
 html,
 body {

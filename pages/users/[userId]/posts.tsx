@@ -1,8 +1,7 @@
 import React from 'react';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
-import { Post } from 'pages/posts';
-import { User } from '.';
-import { useRouter } from 'next/router';
+import { GetStaticPaths } from 'next';
+import { Post, User } from 'lib/types';
+import { fetchPostsOfUser, fetchUser } from 'lib/apiCalls';
 
 type Props = {
   user: User;
@@ -15,9 +14,14 @@ const UserIdPage = (props: Props) => {
       <p className="font-bold text-2xl">Posts of {props.user.name}</p>
       <div className="grid grid-cols-3 gap-x-2 gap-y-4 mt-4">
         {props.posts.map((post) => (
-          <div className="card shadow-blue-500/50" key={post.id}>
-            <h2 className="font-bold text-md h-16">{post.title}</h2>
-            <p className="text-xs">{post.body}</p>
+          <div
+            className="card shadow-2xl lg:card-side bg-primary text-primary-content"
+            key={post.id}
+          >
+            <div className="card-body">
+              <h2 className="card-title">{post.title}</h2>
+              <p className="text-sm">{post.body}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -25,22 +29,9 @@ const UserIdPage = (props: Props) => {
   );
 };
 
-export const fetchUser = async (id: number | string) => {
-  let result = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
-  return await result.json();
-};
-
-export const fetchPostsOfUser = async (userId: number | string) => {
-  let posts: Post[] = await fetch(
-    `https://jsonplaceholder.typicode.com/posts`
-  ).then((res) => res.json());
-
-  return posts.filter((post) => post.userId === userId);
-};
-
 type UrlParams = {
   params: {
-    userId: string | number;
+    userId: number;
   };
 };
 
@@ -51,7 +42,7 @@ export const getStaticProps = async ({ params }: UrlParams) => {
   return {
     props: {
       user,
-      posts: await fetchPostsOfUser(user.id),
+      posts: await fetchPostsOfUser(userId),
     },
   };
 };

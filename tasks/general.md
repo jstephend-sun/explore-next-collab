@@ -1,3 +1,5 @@
+Feb 8, 2022
+
 tasks:
 
 - [x] setup nextjs ts w/ tailwind [ts](https://nextjs.org/docs/getting-started#setup) [tailwind](https://tailwindcss.com/docs/guides/nextjs)

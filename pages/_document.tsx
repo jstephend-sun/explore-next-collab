@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 
 export default function Document() {
   return (
-    <Html>
+    <Html data-theme="dracula">
       <Head />
       <body>
         <Main />
