@@ -1,6 +1,6 @@
 import { Post, User } from 'lib/types';
 
-export const fetchUser = async (id: number): Promise<User> => {
+export const fetchUser = async (id: number | string): Promise<User> => {
   let users: User[] = await fetch(`${process.env.API_URL}/users`).then((res) =>
     res.json()
   );

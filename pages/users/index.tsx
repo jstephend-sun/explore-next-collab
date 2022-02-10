@@ -6,11 +6,11 @@ import { compose, getUsersProps } from 'lib/props';
 import { fetchAllUsers } from 'lib/apiCalls';
 import { User } from 'lib/types';
 
-type Props = {
+export type UsersPageProps = {
   users: User[];
 };
 
-const UsersPage = (props: Props) => {
+const UsersPage = (props: UsersPageProps) => {
   // const [users, setUsers] = useState<User[] | null>(props.users.splice(0, 5)); before
   const [users, setUsers] = useState<User[] | null>(null); // this line
   const router = useRouter();

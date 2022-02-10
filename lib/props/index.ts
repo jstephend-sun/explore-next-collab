@@ -1,8 +1,9 @@
 import { Post, User } from 'lib/types';
 
 export type GlobalProps = {
-  users: User[];
-  posts: Post[];
+  users?: User[];
+  posts?: Post[];
+  user?: User;
 };
 
 export * from './compose';

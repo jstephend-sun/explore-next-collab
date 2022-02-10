@@ -1,9 +1,16 @@
+import { UsersPageProps } from 'pages/users';
+import { UsersIdPostsPageProps } from 'pages/users/[userId]/posts';
+import { ParsedUrlQuery } from 'querystring';
 import { CTXType, NextType, PagePropsType } from '.';
-import { fetchAllUsers } from '../apiCalls';
+import { fetchAllUsers, fetchUser } from '../apiCalls';
+
+interface UsersPropsCTX extends ParsedUrlQuery {
+  userId: string;
+}
 
 export async function getUsersProps(
-  ctx: CTXType,
-  pageProps: PagePropsType,
+  ctx: CTXType<UsersPropsCTX>,
+  pageProps: PagePropsType<UsersPageProps & UsersIdPostsPageProps>,
   next: NextType
 ) {
   // before  -> without error handling
@@ -11,7 +18,10 @@ export async function getUsersProps(
 
   // easily add error handling
   try {
-    pageProps.props.users = await fetchAllUsers();
+    if (ctx.params) {
+      let { userId } = ctx.params;
+      if (userId) pageProps.props.user = await fetchUser(userId);
+    } else pageProps.props.users = await fetchAllUsers();
   } catch {
     pageProps.notFound = true;
     return; // stop the middleware calling

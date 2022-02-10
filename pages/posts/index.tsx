@@ -4,11 +4,11 @@ import { Post } from '../../lib/types/Post';
 import { shuffle } from '../../lib/helper';
 import { compose, getPostsProps } from 'lib/props';
 
-type Props = {
+export type PostsPageProps = {
   posts: Post[];
 };
 
-const PostsPage = ({ posts }: Props) => {
+const PostsPage = ({ posts }: PostsPageProps) => {
   const [pagePosts, setPagePosts] = useState<Post[]>([]);
   const MAX_POSTS = 20;
 

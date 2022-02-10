@@ -2,11 +2,11 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { compose, getUsersProps_v2 } from '../../lib/props';
 import { User } from '../../lib/types';
 
-type Props = {
+export type UsersV2PageProps = {
   users: User[];
 };
 
-const UsersList = ({ users }: Props) => {
+const UsersList = ({ users }: UsersV2PageProps) => {
   return (
     <div className="grid grid-cols-4 gap-5 mx-10">
       {users.map((user) => {

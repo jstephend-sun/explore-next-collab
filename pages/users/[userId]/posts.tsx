@@ -2,13 +2,14 @@ import React from 'react';
 import { GetStaticPaths } from 'next';
 import { Post, User } from 'lib/types';
 import { fetchPostsOfUser, fetchUser } from 'lib/apiCalls';
+import { compose, getPostsProps, getUsersProps } from 'lib/props';
 
-type Props = {
+export type UsersIdPostsPageProps = {
   user: User;
   posts: Post[];
 };
 
-const UserIdPage = (props: Props) => {
+const UserIdPage = (props: UsersIdPostsPageProps) => {
   return (
     <div className="container mx-auto mt-4">
       <p className="font-bold text-2xl">Posts of {props.user.name}</p>
@@ -29,23 +30,24 @@ const UserIdPage = (props: Props) => {
   );
 };
 
-type UrlParams = {
+type PostsContext = {
   params: {
     userId: number;
   };
 };
 
-export const getStaticProps = async ({ params }: UrlParams) => {
-  let { userId } = params;
-  let user: User = await fetchUser(userId);
+export const getStaticProps = compose(getUsersProps, getPostsProps);
+// export const getStaticProps = async ({ params }: PostsContext) => {
+//   let { userId } = params;
+//   let user: User = await fetchUser(userId);
 
-  return {
-    props: {
-      user,
-      posts: await fetchPostsOfUser(userId),
-    },
-  };
-};
+//   return {
+//     props: {
+//       user,
+//       posts: await fetchPostsOfUser(userId),
+//     },
+//   };
+// };
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {

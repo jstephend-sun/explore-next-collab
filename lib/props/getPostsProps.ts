@@ -1,11 +1,21 @@
+import { PostsPageProps } from 'pages/posts';
+import { ParsedUrlQuery } from 'querystring';
 import { CTXType, NextType, PagePropsType } from '.';
-import { fetchAllPosts } from '../apiCalls';
+import { fetchAllPosts, fetchPostsOfUser } from '../apiCalls';
+
+interface PostsPropsCTX extends ParsedUrlQuery {
+  userId: string;
+}
 
 export async function getPostsProps(
-  ctx: CTXType,
-  pageProps: PagePropsType,
+  ctx: CTXType<PostsPropsCTX>,
+  pageProps: PagePropsType<PostsPageProps>,
   next: NextType
 ) {
-  pageProps.props.posts = await fetchAllPosts();
+  if (ctx.params) {
+    let { userId } = ctx.params;
+    if (userId) pageProps.props.posts = await fetchPostsOfUser(userId);
+  } else pageProps.props.posts = await fetchAllPosts();
+
   return next();
 }
