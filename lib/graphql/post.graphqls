@@ -1,0 +1,6 @@
+type Post {
+  userId: Int
+  id: String
+  title: String
+  body: String
+}

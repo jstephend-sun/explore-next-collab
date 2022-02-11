@@ -21,7 +21,9 @@ export async function getUsersProps(
     if (ctx.params) {
       let { userId } = ctx.params;
       if (userId) pageProps.props.user = await fetchUser(userId);
-    } else pageProps.props.users = await fetchAllUsers();
+    } else {
+      pageProps.props.users = await fetchAllUsers();
+    }
   } catch {
     pageProps.notFound = true;
     return; // stop the middleware calling

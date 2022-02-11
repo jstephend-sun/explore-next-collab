@@ -14,7 +14,13 @@ export async function getPostsProps(
 ) {
   if (ctx.params) {
     let { userId } = ctx.params;
-    if (userId) pageProps.props.posts = await fetchPostsOfUser(userId);
+    let postsOfUser = await fetchPostsOfUser(userId);
+    if (postsOfUser.length === 0) {
+      pageProps.notFound = true;
+      return;
+    }
+
+    if (userId) pageProps.props.posts = postsOfUser;
   } else pageProps.props.posts = await fetchAllPosts();
 
   return next();
