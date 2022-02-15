@@ -1,9 +1,14 @@
 type Query {
-  viewer: User!
-  hello: String!
   posts: [Post]
+  users(orderBy: OrderBy = ID_ASC): [User]
+  comments: [Comment]
 }
 
-type Mutation {
-  updateName(name: String!): User!
+enum OrderBy {
+  ID_DESC,
+  ID_ASC
 }
+
+# type Mutation {
+
+# }

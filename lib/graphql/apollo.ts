@@ -5,12 +5,19 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+import DataLoader from 'dataloader';
+
+import { Post, Comment } from '@graphql-types@';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 export type ResolverContext = {
   req?: IncomingMessage;
   res?: ServerResponse;
+  loaders?: {
+    getPostsOfUserLoader: DataLoader<string, Post[], string>;
+    getCommentsOfPostLoader: DataLoader<string, Comment[], string>;
+  };
 };
 
 function createIsomorphLink(context: ResolverContext = {}) {

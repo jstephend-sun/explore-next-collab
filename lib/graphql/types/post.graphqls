@@ -3,4 +3,5 @@ type Post {
   id: String
   title: String
   body: String
+  comments: [Comment]
 }

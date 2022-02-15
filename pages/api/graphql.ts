@@ -5,9 +5,20 @@ import { MicroRequest } from 'apollo-server-micro/dist/types';
 import { ServerResponse } from 'http';
 import micro_cors from 'micro-cors';
 
+import {
+  getCommentsOfPostsLoader,
+  getPostsOfUserLoader,
+} from '../../lib/graphql/dataloader';
+
 const apolloServer = new ApolloServer({
   schema,
   //   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+  context: {
+    loaders: {
+      getPostsOfUserLoader: getPostsOfUserLoader(),
+      getCommentsOfPostLoader: getCommentsOfPostsLoader(),
+    },
+  },
 });
 
 const startServer = apolloServer.start();

@@ -7,20 +7,21 @@ tasks:
 
 # Part 1: GraphQL Setup
 - install
-    - [ ] graphql
-    - [ ] apollo-server-micro
+    - [x] graphql
+    - [x] apollo-server-micro
+    - [x] typescript related packages (mostly codegen)
 
 - files
-    - [ ] /lib/apollo
-        - [ ] schema
-        - [ ] typedefs  
-        - [ ] resolvers
+    - [x] /lib/apollo
+        - [x] schema
+        - [x] typedefs  
+        - [x] resolvers
 
 ---
 
 # Part 2: Typedefs
 - [ ] User
-- [ ] Post
+- [x] Post
 
 - [ ] User { Posts }
 
@@ -28,20 +29,20 @@ tasks:
 
 # Part 3: Resolvers
 - [ ] Query
-    - [ ] const Query: Required<QueryResolvers<ResolverContext>>
+    - [x] const Query: Required<QueryResolvers<ResolverContext>>
         - ResolverContext -> { req: IncomingMessage; res: ServerResponse } from 'http'   or maybe from nextjs ? :: nvm it also uses 'http'
         
     - [ ] users
         - fetch all users from jsonplaceholder
-    - [ ] posts
+    - [x] posts
         - fetch all posts 
 
 
 ---
 
 # Part 4: /api/graphql (Some parts in "setup" might not be necessary)
-- [ ] create ApolloServer ( { schema } )
-- [ ] export apollo handler
+- [x] create ApolloServer ( { schema } )
+- [x] export apollo handler
 
 
 # Future plans:
