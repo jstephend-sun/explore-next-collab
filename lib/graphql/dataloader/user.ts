@@ -1,10 +1,7 @@
 import { User, Post } from '@graphql-types@';
 import { sort } from '.';
 import DataLoader from 'dataloader';
-
-const filterPostsByUserId = (posts: Post[], userId: string | number) => {
-  return posts.filter((post) => post.userId.toString() === userId.toString());
-};
+import { map, groupBy } from 'ramda';
 
 export type UsersArgs = {
   orderBy: string;
@@ -23,9 +20,8 @@ export const getPostsOfUser = async (ids: string[]) => {
     'https://jsonplaceholder.typicode.com/posts'
   ).then((res) => res.json());
 
-  return ids.map((id) => filterPostsByUserId(posts, id));
+  let postsByUserId = groupBy((post) => post.userId.toString(), posts);
+  return map((id) => postsByUserId[id], ids);
 };
 
-export const getPostsOfUserLoader = () => {
-  return new DataLoader(getPostsOfUser);
-};
+export const getPostsOfUserLoader = () => new DataLoader(getPostsOfUser);

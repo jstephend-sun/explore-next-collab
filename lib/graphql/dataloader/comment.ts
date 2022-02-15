@@ -1,18 +1,14 @@
 import { Comment } from '@graphql-types@';
 import DataLoader from 'dataloader';
-
-const filterCommentsByPost = (comments: Comment[], postId: string | number) => {
-  return comments.filter(
-    (comment) => comment?.postId?.toString() === postId.toString()
-  );
-};
+import { groupBy, map } from 'ramda';
 
 export const getCommentsOfPosts = async (ids: string[]) => {
   let comments: Comment[] = await fetch(
     'https://jsonplaceholder.typicode.com/comments'
   ).then((res) => res.json());
 
-  return ids.map((id) => filterCommentsByPost(comments, id));
+  let commentsOfPost = groupBy((comment) => comment.postId, comments);
+  return map((id) => commentsOfPost[id], ids);
 };
 
 export const getCommentsOfPostsLoader = () =>

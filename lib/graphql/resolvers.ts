@@ -16,7 +16,12 @@ const Query: Required<QueryResolvers<ResolverContext>> = {
       (res) => res.json()
     );
   },
-  users: async (_parent, { orderBy }: UsersArgs, _context, _info) => {
+  users: async (
+    _parent,
+    { orderBy = 'ID_ASC' }: UsersArgs,
+    _context,
+    _info
+  ) => {
     return await getAllUsers(orderBy);
   },
   comments: async (_parent, _args, _context, _info) => {
