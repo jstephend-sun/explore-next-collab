@@ -37,8 +37,8 @@ const User: UserResolvers<ResolverContext> = {
     let useLoader = true;
 
     if (useLoader) {
-      let getPostsOfUserLoader = loaders?.getPostsOfUserLoader;
-      return getPostsOfUserLoader?.load(id) ?? [];
+      let { getPostsOfUserLoader } = loaders!;
+      return getPostsOfUserLoader.load(id);
     } else {
       let posts: Post[] = await fetch(
         'https://jsonplaceholder.typicode.com/posts'
@@ -55,8 +55,8 @@ const Post: PostResolvers<ResolverContext> = {
     let useLoader = true;
 
     if (useLoader) {
-      let getCommentsOfPostLoader = loaders?.getCommentsOfPostLoader;
-      return getCommentsOfPostLoader?.load(id) ?? [];
+      let { getCommentsOfPostLoader } = loaders!;
+      return getCommentsOfPostLoader?.load(id);
     } else {
       let comments: Comment[] = await fetch(
         'https://jsonplaceholder.typicode.com/comments'
