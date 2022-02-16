@@ -7,7 +7,7 @@ export const getCommentsOfPosts = async (ids: readonly string[]) => {
     'https://jsonplaceholder.typicode.com/comments'
   ).then((res) => res.json());
 
-  let commentsOfPost = groupBy((comment) => comment?.postId ?? '0', comments);
+  let commentsOfPost = groupBy((comment) => comment.postId, comments);
   return map((id) => commentsOfPost[id], ids);
 };
 

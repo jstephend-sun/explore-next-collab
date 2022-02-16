@@ -1,6 +1,6 @@
 type Comment {
-  postId: String!
-  id: String!
+  postId: ID!
+  id: ID!
   name: String!
   email: String!
   body: String!

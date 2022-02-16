@@ -1,6 +1,6 @@
 type Post {
-  userId: Int!
-  id: String!
+  userId: ID!
+  id: ID!
   title: String!
   body: String!
   comments: [Comment]

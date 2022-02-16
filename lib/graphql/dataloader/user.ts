@@ -21,7 +21,7 @@ export const getPostsOfUser = async (ids: readonly string[]) => {
     'https://jsonplaceholder.typicode.com/posts'
   ).then((res) => res.json());
 
-  let postsByUserId = groupBy((post) => post?.userId?.toString() ?? '0', posts);
+  let postsByUserId = groupBy((post) => post.userId, posts);
   return map((id) => postsByUserId[id], ids);
 };
 
