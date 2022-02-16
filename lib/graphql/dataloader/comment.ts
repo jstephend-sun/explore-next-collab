@@ -8,7 +8,7 @@ export const getCommentsOfPosts = async (ids: readonly string[]) => {
   ).then((res) => res.json());
 
   let commentsOfPost = groupBy((comment) => comment?.postId ?? '0', comments);
-  return Promise.all(map((id) => commentsOfPost[id], ids));
+  return map((id) => commentsOfPost[id], ids);
 };
 
 export const getCommentsOfPostsLoader = () =>

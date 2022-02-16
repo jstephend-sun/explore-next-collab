@@ -22,7 +22,7 @@ export const getPostsOfUser = async (ids: readonly string[]) => {
   ).then((res) => res.json());
 
   let postsByUserId = groupBy((post) => post?.userId?.toString() ?? '0', posts);
-  return Promise.all(map((id) => postsByUserId[id], ids));
+  return map((id) => postsByUserId[id], ids);
 };
 
 export const getPostsOfUserLoader = () => new DataLoader(getPostsOfUser);
