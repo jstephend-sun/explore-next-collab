@@ -6,21 +6,36 @@ import { compose, getUsersProps } from 'lib/props';
 import { fetchAllUsers } from 'lib/apiCalls';
 import { User } from 'lib/types';
 
+import {
+  UsersQuery, // Typing
+  useUsersQuery, // Hooker
+  UsersDocument, // GQL gql`query { user  {id }}`
+} from '../../lib/graphql/queries/Users.graphql';
+import { initializeApollo } from 'lib/graphql/apollo';
+import { useQuery } from '@apollo/client';
+
 export type UsersPageProps = {
-  users: User[];
+  initialApolloState: any;
 };
 
-const UsersPage = (props: UsersPageProps) => {
+const UsersPage = ({ initialApolloState }: UsersPageProps) => {
   // const [users, setUsers] = useState<User[] | null>(props.users.splice(0, 5)); before
-  const [users, setUsers] = useState<User[] | null>(null); // this line
+  // const [users, setUsers] = useState<User[] | null>(null); // this line
   const router = useRouter();
 
-  useEffect(() => {
-    setUsers(props.users.splice(0, 5));
-  }, [props.users]);
+  const { data, loading, error, refetch } = useUsersQuery();
+
+  // useEffect(() => {
+  //   setUsers(props.users.splice(0, 5));
+  // }, [props.users]);
 
   const handleReloadUsers = async (ev: any) => {
-    setUsers(await fetchAllUsers());
+    // data?.users!.forEach((user) => {
+    //   console.log(user);
+    // });
+    // setUsers(await fetchAllUsers());
+    console.log(initialApolloState);
+    await refetch();
   };
 
   const handleUserClick = (ev: any, id: number) => {
@@ -31,15 +46,21 @@ const UsersPage = (props: UsersPageProps) => {
     <div className="container mx-auto py-10">
       <p className="font-bold">Users</p>
       <div className="flex flex-wrap">
-        {users?.map((user) => {
-          return (
-            <div key={user.id} className="flex-grow">
-              <p onDoubleClick={(ev) => handleUserClick(ev, user.id)}>
-                {user.name}
-              </p>
-            </div>
-          );
-        })}
+        {loading
+          ? 'Wow'
+          : data?.users?.map((user) => {
+              return (
+                <div key={user!.id} className="flex-grow">
+                  <p
+                    onDoubleClick={(ev) =>
+                      handleUserClick(ev, parseInt(user!.id))
+                    }
+                  >
+                    {user!.name}
+                  </p>
+                </div>
+              );
+            })}
       </div>
 
       <button className="btn btn-success mt-4" onClick={handleReloadUsers}>
@@ -49,6 +70,23 @@ const UsersPage = (props: UsersPageProps) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = compose(getUsersProps);
+// export const getStaticProps: GetStaticProps = compose(getUsersProps);
+export const getStaticProps: GetStaticProps = async () => {
+  const apolloClient = initializeApollo();
+  //networkError: Error: Expected undefined to be a GraphQL schema.
+  // error - Error: Expected undefined to be a GraphQL schema.
+
+  // console.log(apolloClient);
+  // UsersQuery?
+  await apolloClient.query({
+    query: UsersDocument,
+  });
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+  };
+};
 
 export default UsersPage;

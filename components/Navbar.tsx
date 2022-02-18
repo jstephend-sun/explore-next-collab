@@ -21,10 +21,10 @@ const Navbar = (props: Props) => {
         <div className="navbar-end">
           <div className="dropdown dropdown-end">
             <div tabIndex={0} className="avatar m-1 btn">
-              <p className="mr-2">Hilu User</p>
+              <p className="mr-2">Coolkid</p>
               <div className="rounded-full w-10 h-10 m-1">
                 <Image
-                  src="https://i.pravatar.cc/500?img=32"
+                  src="https://i.pravatar.cc/500?img=64"
                   alt="Picture ni user"
                   height={50}
                   width={50}

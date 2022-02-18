@@ -5,20 +5,28 @@ import { shuffle } from '../../lib/helper';
 import { compose, getPostsProps } from 'lib/props';
 
 export type PostsPageProps = {
-  posts: Post[];
+  // posts: Post[];
 };
 
-const PostsPage = ({ posts }: PostsPageProps) => {
-  const [pagePosts, setPagePosts] = useState<Post[]>([]);
-  const MAX_POSTS = 20;
+import {
+  PostsMaloneQuery,
+  usePostsMaloneQuery,
+  PostsMaloneDocument,
+} from '../../lib/graphql/queries/Posts.graphql';
 
-  useEffect(() => {
-    setPagePosts(shuffle(posts).slice(0, MAX_POSTS));
-  }, [posts]);
+const PostsPage = (props: PostsPageProps) => {
+  // const [pagePosts, setPagePosts] = useState<Post[]>([]);
+  // const MAX_POSTS = 20;
+
+  const {data, loading, error, refetch} = usePostsMaloneQuery();
+
+  // useEffect(() => {
+  //   setPagePosts(shuffle(posts).slice(0, MAX_POSTS));
+  // }, [posts]);
 
   return (
     <div className="container mx-auto grid grid-cols-3 gap-x-4 gap-y-2 mt-4">
-      {pagePosts.map((post) => (
+      {data?.posts?.map((post) => post && (
         <div
           className="card shadow-2xl lg:card-side bg-primary text-primary-content"
           key={post.id}
@@ -33,6 +41,6 @@ const PostsPage = ({ posts }: PostsPageProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = compose(getPostsProps);
+// export const getServerSideProps: GetServerSideProps = compose(getPostsProps);
 
 export default PostsPage;

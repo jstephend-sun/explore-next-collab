@@ -1,0 +1,8 @@
+query PostsMalone {
+    posts {
+        userId
+        id
+        title
+        body
+    }
+}
